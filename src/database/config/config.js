@@ -15,14 +15,16 @@ module.exports = {
         host: '127.0.0.1',
         dialect: config.db.test.dialect,
     },
-  production: {
-      url: config.db.production.url,
+    production: {
+        url: config.db.production.url,
         use_env_variable: config.db.production.url,
+        dialect: 'postgres',
+        protocol: 'postgres',
         dialectOptions: {
             ssl: {
                 require: true,
                 rejectUnauthorized: false,
             },
-        }
+        },
     },
 };
