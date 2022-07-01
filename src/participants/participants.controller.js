@@ -1,20 +1,7 @@
 const sequelize = require('../database/models/index').sequelize;
 const initModels = require('../database/models/init-models');
-const models = initModels(sequelize);
-const uuid = require('uuid');
 
-const postParticipants = async (data) => {
-    const userId = uuid.v4();
-    const newParticipants = await models.participants.create({
-        id: userId,
-        conversation_id: data.conversation_id,
-        user_id: data.user_id
-    });
-    return {
-        message: `Participant added succesfully with the id: ${userId}`,
-        user: newParticipants,
-    };
-};
+const models = initModels(sequelize);
 
 const getAllParticipants = async (conversation_id) => {
     const participants = await models.participants.findAll({
@@ -35,6 +22,9 @@ const getConversationInfo = async (id) => {
             {
                 model: models.participants,
                 as: 'participants',
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                },
                 include: [
                     {
                         model: models.users,
@@ -51,7 +41,6 @@ const getConversationInfo = async (id) => {
 };
 
 module.exports = {
-    postParticipants,
     getAllParticipants,
     getConversationInfo,
 };

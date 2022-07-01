@@ -1,38 +1,30 @@
 const authControllers = require('./auth.controller');
-const userControllers = require('../users/users.controller');
-const jwt = require('jsonwebtoken');
+const userContollers = require('../users/users.controller');
 const config = require('../config');
-const { toPromise } = require('../utils/toPromise');
-
-const addUser = async (req, res) => {
-    const [user, err] = await toPromise(userControllers.registerUser(req.body));
-    if (err || !req.body) {
-        res.status(400).json({ message: 'Data Missing' });
-    }
-    res.status(201).json({user});
-};
+const jwt = require('jsonwebtoken');
+const { toPromise } = require('../tools/toPromise');
 
 const loginUser = async (req, res) => {
+    console.log(req.body);
     if (!req.body) {
         return res.status(400).json({ message: 'Missing data' });
     } else if (!req.body.email || !req.body.password) {
         return res.status(400).json({ message: 'Missing data' });
     }
-    
-    const [response, error] = await toPromise(
-        authControllers.checkUserCredential(req.body.email, req.body.password)
-    );
-    if (error || !response) {
-        return res.status(401).json({ message: 'Invalid Credential' });
-    }
-    const [user, err] = await toPromise(
-        userControllers.getUserByEmail(req.body.email)
-    );
+
+    const [response, err] = await toPromise(authControllers.checkUsersCredential(
+        req.body.email,
+        req.body.password
+    ));
 
     if (err || !response) {
         return res.status(401).json({ message: 'Invalid Credential' });
     }
 
+    const [user, error] = await toPromise(userContollers.getUserByEmail(req.body.email));
+    if(error || !user){
+        return res.status(401).json({ message: 'Invalid Credential' });
+    }
     const token = jwt.sign(
         {
             id: user.id,
@@ -43,9 +35,6 @@ const loginUser = async (req, res) => {
     res.status(200).json({ token: token });
 };
 
-
-
 module.exports = {
     loginUser,
-    addUser
 };
