@@ -15,7 +15,8 @@ module.exports = {
         host: '127.0.0.1',
         dialect: config.db.test.dialect,
     },
-    production: {
+  production: {
+      url: config.url,
         use_env_variable: config.db.production.url,
         dialectOptions: {
             ssl: {
