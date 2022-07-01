@@ -1,4 +1,4 @@
-const config = require('../../config')
+const config = require('../../config');
 
 module.exports = {
     development: {
@@ -16,13 +16,11 @@ module.exports = {
         dialect: config.db.test.dialect,
     },
     production: {
-        production: {
-            url: config.db.production.url,
-            use_env_variable: config.db.production.url,
-            ssl: true,
-            dialectOptions: {
-                ssl: { require: true, rejectUnauthorized: false },
-            },
-        },
+        url: config.db.production.url,
+        use_env_variable: config.db.production.url,
+        dialect: 'postgres',
+        protocol: 'postgres',
+        ssl: true,
+        dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
     },
 };
