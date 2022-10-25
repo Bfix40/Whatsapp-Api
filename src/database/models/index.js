@@ -5,14 +5,15 @@ const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.js')[env];
+const config = require('../config/config.js');
+
+const configObj = config[env];
 const db = {};
 
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(
-      'postgres://ftixqdyvoelupl:ee9c03effa529a1ed851f21b6d90196b36619ddfbc5df97959ba041bf74209dd@ec2-34-233-115-14.compute-1.amazonaws.com:5432/d2bqr0kirf7mln',
-      config
+        process.env[configObj.use_env_variable],    config
   );
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, config);
