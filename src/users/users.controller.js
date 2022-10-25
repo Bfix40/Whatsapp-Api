@@ -1,8 +1,7 @@
-const sequelize = require('../database/models/index').sequelize;
-const initModels = require('../database/models/init-models');
+const models = require('../database/models/init-models').initModels();
 const uuid = require('uuid');
 const crypto = require('../utils/crypto');
-const models = initModels(sequelize);
+
 
 const registerUser = async (data) => {
     const hashedPassword = crypto.hashPassword(data.password);

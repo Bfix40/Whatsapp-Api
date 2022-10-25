@@ -1,6 +1,4 @@
-const sequelize = require('../database/models/index').sequelize;
-const initModels = require('../database/models/init-models');
-const models = initModels(sequelize);
+const models = require('../database/models/init-models').initModels();
 const uuid = require('uuid');
 
 const getAllConversations = async () => {
